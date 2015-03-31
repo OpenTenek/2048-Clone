@@ -88,7 +88,7 @@ public class Display
         return canvas.getHeight();
     }
 
-    public void render( Board board )
+    public void render(Board board)
     {
         setColor(0x77777a);
         fillRect(0, 0, img.getWidth(), img.getHeight());
@@ -101,7 +101,7 @@ public class Display
             {
                 setColor(0x99999a); 
                 
-                roundRect(x*100 + 5, y*100 + 5, 90, 90, 20);
+                roundRect(x*100 + 5, 100 + y*100 + 5, 90, 90, 20);
             }
         }
         
@@ -117,12 +117,38 @@ public class Display
                 double xx = t.getDisplayLocation().x;
                 double yy = t.getDisplayLocation().y;
                 
-                setColor(Color.HSBtoRGB(10/360f, (float)(Math.log(val)/Math.log(2))/11f, 1f));
+                setColor(getColorCode(val));
                 
-                roundRect(xx*100 + 5, yy*100 + 5, 90, 90, 20);
+                roundRect(xx*100 + 5, 100 + yy*100 + 5, 90, 90, 20);
                 setColor(0x000000);
-                gfx.drawString("" + val, (int)(xx*100 + 45), (int)(yy*100 + 57));
+                gfx.drawString("" + val, (int)(xx*100 + 45), 100 + (int)(yy*100 + 57));
             }
+        }
+        
+        gfx.drawString("Score: " + board.getScore(), 200, 50);
+        
+        if(!board.canMove()) 
+        {
+            gfx.drawString("You Lose!", 20, 50);
+        }
+    }
+    
+    private int getColorCode(int val) 
+    {
+        switch(val) 
+        {
+        case 2: return 0xeeeeee;
+        case 4: return 0xeeddaa;
+        case 8: return 0xffaa33;
+        case 16: return 0xff8800;
+        case 32: return 0xff6644;
+        case 64: return 0xff0000;
+        case 128: return 0xeedd88;
+        case 256: return 0xffee77;
+        case 512: return 0xffee55;
+        case 1024: return 0xffee22;
+        case 2048: return 0xffee00;
+        default: return 0x0000ff;
         }
     }
 }

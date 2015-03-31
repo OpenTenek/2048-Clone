@@ -10,7 +10,7 @@ public class Game extends GameLoop
     {
         super(1000, 60);
         
-        display = new Display("2048", 400, 400);
+        display = new Display("2048", 400, 500);
         keyboard = display.getKeyboard();
         
         board = new Board(4, 4);
@@ -25,22 +25,24 @@ public class Game extends GameLoop
         
         board.update();
         
-        boolean moved = true;
+        boolean moved = false;
         
-        if(keyboard.isKeyTyped(Keyboard.UP))         board.moveUp();
-        else if(keyboard.isKeyTyped(Keyboard.DOWN))  board.moveDown();
-        else if(keyboard.isKeyTyped(Keyboard.LEFT))  board.moveLeft();
-        else if(keyboard.isKeyTyped(Keyboard.RIGHT)) board.moveRight();
+        if(keyboard.isKeyTyped(Keyboard.UP))         moved = board.moveUp();
+        else if(keyboard.isKeyTyped(Keyboard.DOWN))  moved = board.moveDown();
+        else if(keyboard.isKeyTyped(Keyboard.LEFT))  moved = board.moveLeft();
+        else if(keyboard.isKeyTyped(Keyboard.RIGHT)) moved = board.moveRight();
         else moved = false;
         
-        if(moved) board.spawnRandomTile();
+        if(keyboard.isKeyTyped(Keyboard.ESCAPE)) 
+        { 
+            board.clearBoard(); 
+            board.resetScore();
+            
+            board.spawnRandomTile();
+            board.spawnRandomTile();
+        }
         
-        // TODO: Should be if can't move
-//        if(!board.emptySpace()) 
-//        {
-//            System.out.println("You lose");
-//            System.exit(0);
-//        }
+        if(moved) board.spawnRandomTile();
     }
     
     public void render() 
