@@ -10,18 +10,20 @@ public class Game extends GameLoop
     {
         super(1000, 60);
         
-        display = new Display("2048", 500, 500);
+        display = new Display("2048", 400, 400);
         keyboard = display.getKeyboard();
         
         board = new Board(4, 4);
         
-        board.addRandomValue();
-        board.addRandomValue();
+        board.spawnRandomTile();
+        board.spawnRandomTile();
     }
     
     public void update() 
     {
         keyboard.update();
+        
+        board.update();
         
         boolean moved = true;
         
@@ -31,14 +33,14 @@ public class Game extends GameLoop
         else if(keyboard.isKeyTyped(Keyboard.RIGHT)) board.moveRight();
         else moved = false;
         
-        // TODO: Should be if can't move
-        if(!board.emptySpace()) 
-        {
-            System.out.println("You lose");
-            System.exit(0);
-        }
+        if(moved) board.spawnRandomTile();
         
-        if(moved) board.addRandomValue();
+        // TODO: Should be if can't move
+//        if(!board.emptySpace()) 
+//        {
+//            System.out.println("You lose");
+//            System.exit(0);
+//        }
     }
     
     public void render() 

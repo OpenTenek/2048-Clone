@@ -56,9 +56,9 @@ public class Display
         gfx.fillRect(x, y, w, h);
     }
     
-    public void roundRect(int x, int y, int w, int h, int a) 
+    public void roundRect(double x, double y, double w, double h, double a) 
     {
-        gfx.fillRoundRect(x, y, w, h, a, a);
+        gfx.fillRoundRect((int)x, (int)y, (int)w, (int)h, (int)a, (int)a);
     }
     
     public void show() 
@@ -99,14 +99,29 @@ public class Display
         {
             for(int y = 0; y < board.getHeight(); y++) 
             {
-                int val = board.getValue(x, y);
-                
-                if(val == 0) setColor(0x99999a); 
-                else setColor(Color.HSBtoRGB(10/360f, (float)(Math.log(val)/Math.log(2))/11f, 1f));
+                setColor(0x99999a); 
                 
                 roundRect(x*100 + 5, y*100 + 5, 90, 90, 20);
+            }
+        }
+        
+        for(int x = 0; x < board.getWidth(); x++) 
+        {
+            for(int y = 0; y < board.getHeight(); y++) 
+            {
+                Tile t = board.getTile(x, y);
+                if(t == null) continue;
+                
+                int val = t.getValue();
+                
+                double xx = t.getDisplayLocation().x;
+                double yy = t.getDisplayLocation().y;
+                
+                setColor(Color.HSBtoRGB(10/360f, (float)(Math.log(val)/Math.log(2))/11f, 1f));
+                
+                roundRect(xx*100 + 5, yy*100 + 5, 90, 90, 20);
                 setColor(0x000000);
-                if(val != 0) gfx.drawString("" + val, x*100 + 45, y*100 + 57);
+                gfx.drawString("" + val, (int)(xx*100 + 45), (int)(yy*100 + 57));
             }
         }
     }
